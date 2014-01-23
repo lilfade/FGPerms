@@ -1,0 +1,1 @@
+This is a custom simple plugin made for FG Asylum to manage permissions for the different tiers we have

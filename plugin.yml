@@ -1,0 +1,13 @@
+name: FG2
+main: co.fadedgaming.lilfade.FGPerms.FGPerms
+version: 0.01
+description: >
+             FGPerms is a custom made plugin for fadedgaming.co, it will allow players to buy permissions
+             from a signbased system for our tier system
+author: lilfade
+
+commands:
+  fgphelp:
+    description: displays the help
+
+depend: [Vault]
