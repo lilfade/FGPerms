@@ -1,23 +1,31 @@
 package co.fadedgaming.lilfade.FGPerms;
 
+import java.util.logging.Logger;
+
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import net.milkbowl.vault.chat.Chat;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.permission.Permission;
-import co.fadedgaming.lilfade.FGPerms.FGSigns;
 
 public class FGPerms extends JavaPlugin {
-    
+	private static final Logger log = Logger.getLogger("Minecraft");
+	public static Economy econ = null;
+	public static Permission permission = null;
+	
     @Override
     public void onEnable() {
     	PluginManager pm = getServer().getPluginManager();
     	
     	//setupPermissions();
     	//setupChat();
-    	setupEconomy();
+    	if (!setupEconomy() ) {
+            log.severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+    	setupPermissions();
     	
     	getLogger().info("Linked to Vault");
     	
@@ -28,7 +36,7 @@ public class FGPerms extends JavaPlugin {
     public void onDisable() {
     	
     }
-    public static Economy economy = null;
+    
     /*public static Permission permission = null;
     public static Chat chat = null;
 
@@ -55,10 +63,19 @@ public class FGPerms extends JavaPlugin {
     {
         RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
         if (economyProvider != null) {
-            economy = economyProvider.getProvider();
+            econ = economyProvider.getProvider();
         }
 
-        return (economy != null);
+        return (econ != null);
+    }
+    
+    private boolean setupPermissions()
+    {
+        RegisteredServiceProvider<Permission> permissionProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+        if (permissionProvider != null) {
+            permission = permissionProvider.getProvider();
+        }
+        return (permission != null);
     }
 }
 
